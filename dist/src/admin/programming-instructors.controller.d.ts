@@ -1,0 +1,91 @@
+import { PrismaService } from '../prisma/prisma.service';
+export declare class ProgrammingInstructorsController {
+    private prisma;
+    constructor(prisma: PrismaService);
+    findPublic(): import("@prisma/client").Prisma.PrismaPromise<{
+        id: string;
+        title: string;
+        createdAt: Date;
+        updatedAt: Date;
+        name: string;
+        isActive: boolean;
+        specialization: string;
+        bio: string | null;
+        photoUrl: string | null;
+        skills: string[];
+        githubUrl: string | null;
+        linkedinUrl: string | null;
+        displayOrder: number;
+    }[]>;
+    findAll(): import("@prisma/client").Prisma.PrismaPromise<{
+        id: string;
+        title: string;
+        createdAt: Date;
+        updatedAt: Date;
+        name: string;
+        isActive: boolean;
+        specialization: string;
+        bio: string | null;
+        photoUrl: string | null;
+        skills: string[];
+        githubUrl: string | null;
+        linkedinUrl: string | null;
+        displayOrder: number;
+    }[]>;
+    create(body: {
+        name: string;
+        title: string;
+        specialization: string;
+        bio?: string;
+        photoUrl?: string;
+        skills?: string[];
+        githubUrl?: string;
+        linkedinUrl?: string;
+        displayOrder?: number;
+        isActive?: boolean;
+    }): import("@prisma/client").Prisma.Prisma__ProgrammingInstructorClient<{
+        id: string;
+        title: string;
+        createdAt: Date;
+        updatedAt: Date;
+        name: string;
+        isActive: boolean;
+        specialization: string;
+        bio: string | null;
+        photoUrl: string | null;
+        skills: string[];
+        githubUrl: string | null;
+        linkedinUrl: string | null;
+        displayOrder: number;
+    }, never, import("@prisma/client/runtime/client").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
+    update(id: string, body: any): import("@prisma/client").Prisma.Prisma__ProgrammingInstructorClient<{
+        id: string;
+        title: string;
+        createdAt: Date;
+        updatedAt: Date;
+        name: string;
+        isActive: boolean;
+        specialization: string;
+        bio: string | null;
+        photoUrl: string | null;
+        skills: string[];
+        githubUrl: string | null;
+        linkedinUrl: string | null;
+        displayOrder: number;
+    }, never, import("@prisma/client/runtime/client").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
+    remove(id: string): import("@prisma/client").Prisma.Prisma__ProgrammingInstructorClient<{
+        id: string;
+        title: string;
+        createdAt: Date;
+        updatedAt: Date;
+        name: string;
+        isActive: boolean;
+        specialization: string;
+        bio: string | null;
+        photoUrl: string | null;
+        skills: string[];
+        githubUrl: string | null;
+        linkedinUrl: string | null;
+        displayOrder: number;
+    }, never, import("@prisma/client/runtime/client").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
+}
