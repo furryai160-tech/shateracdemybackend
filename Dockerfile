@@ -1,29 +1,40 @@
-# استخدام Node 22 الرسمي من Docker Hub (22.14+ يدعم Prisma 7)
-FROM node:22-alpine
-
-# تثبيت openssl المطلوب لـ Prisma
-RUN apk add --no-cache openssl
+# ===== Stage 1: Build =====
+FROM node:20.19-alpine AS builder
 
 WORKDIR /app
 
-# نسخ ملفات الحزمة أولاً (للاستفادة من Docker cache)
+# نسخ ملفات الـ package أولاً للاستفادة من Docker cache
 COPY package*.json ./
 COPY prisma ./prisma/
 
-# تثبيت الحزم
+# تثبيت الحزم وتوليد Prisma client
 RUN npm ci
-
-# توليد Prisma Client
 RUN npx prisma generate
 
-# نسخ باقي الكود
+# نسخ باقي الكود وبناء المشروع
 COPY . .
-
-# بناء المشروع
 RUN npm run build
 
-# تحديد البورت
+# ===== Stage 2: Production =====
+FROM node:20.19-alpine AS production
+
+WORKDIR /app
+
+ENV NODE_ENV=production
+
+# نسخ ملفات الـ package (production dependencies فقط)
+COPY package*.json ./
+COPY prisma ./prisma/
+
+RUN npm ci --omit=dev
+RUN npx prisma generate
+
+# نسخ ملفات البناء من الـ builder stage
+COPY --from=builder /app/dist ./dist
+
+# مجلد الـ uploads
+RUN mkdir -p uploads
+
 EXPOSE 4000
 
-# تشغيل التطبيق
 CMD ["node", "dist/main"]
