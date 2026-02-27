@@ -9,7 +9,7 @@ services:
     healthCheckPath: /
     envVars:
       - key: NODE_VERSION
-        value: 24
+        value: 20.19.0
       - key: NODE_ENV
         value: production
       - key: PORT
