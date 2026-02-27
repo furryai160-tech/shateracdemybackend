@@ -19,4 +19,4 @@ RUN npx prisma generate
 RUN npm run build
 
 # تشغيل السيرفر
-CMD ["npm", "run", "start:prod"]
+CMD ["node", "dist/src/main"]
