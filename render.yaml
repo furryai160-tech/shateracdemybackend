@@ -5,6 +5,7 @@ services:
     region: frankfurt
     plan: free
     dockerfilePath: ./Dockerfile
+    startCommand: node dist/src/main
     envVars:
       - key: NODE_ENV
         value: production
