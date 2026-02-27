@@ -1,36 +1,27 @@
-# ===== Stage 1: Build =====
-FROM node:20-alpine AS builder
-
-WORKDIR /app
-
-# نسخ ملفات الـ package أولاً للاستفادة من Docker cache
-COPY package*.json ./
-COPY prisma ./prisma/
-
-# تثبيت الحزم وتوليد Prisma client
-RUN npm ci
-RUN npx prisma generate
-
-# نسخ باقي الكود وبناء المشروع
-COPY . .
-RUN npm run build
-
-# ===== Stage 2: Production =====
-FROM node:20-alpine AS production
+FROM node:20-alpine
 
 WORKDIR /app
 
 ENV NODE_ENV=production
 
-# نسخ ملفات الـ package (production dependencies فقط)
+# تثبيت الحزم
 COPY package*.json ./
 COPY prisma ./prisma/
 
-RUN npm ci --omit=dev
+# تثبيت كل الحزم (devDependencies ضرورية لعملية البناء)
+RUN npm ci
+
+# نسخ كل الكود
+COPY . .
+
+# بناء المشروع
+RUN npm run build
+
+# توليد Prisma Client
 RUN npx prisma generate
 
-# نسخ ملفات البناء من الـ builder stage
-COPY --from=builder /app/dist ./dist
+# إزالة devDependencies بعد البناء (توفير مساحة)
+RUN npm prune --omit=dev
 
 # مجلد الـ uploads
 RUN mkdir -p uploads
