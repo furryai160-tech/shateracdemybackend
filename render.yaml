@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: shater-academy-backend
+    runtime: node
+    region: frankfurt
+    plan: free
+    buildCommand: npm ci && npx prisma generate && npm run build
+    startCommand: node dist/main
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 4000
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: API_URL
+        sync: false
+      - key: FRONTEND_URL
+        value: https://alshateracademy.com
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: VDOCIPHER_SECRET
+        sync: false
+      - key: BUNNY_API_KEY
+        sync: false
+      - key: BUNNY_LIBRARY_ID
+        sync: false
