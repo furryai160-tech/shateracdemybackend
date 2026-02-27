@@ -1,4 +1,4 @@
-FROM node:20-alpine
+FROM node:22-alpine
 
 WORKDIR /app
 
@@ -6,27 +6,17 @@ WORKDIR /app
 COPY package*.json ./
 COPY prisma ./prisma/
 
-# تثبيت كل الحزم (بما فيها devDeps عشان @nestjs/cli موجود)
-RUN npm ci
+# تثبيت كل المكتبات (بما فيها devDeps للـ nest CLI)
+RUN npm install --ignore-scripts
 
-# نسخ كل الكود
+# نسخ باقي الكود
 COPY . .
-
-# بناء المشروع (محتاج @nestjs/cli)
-RUN npm run build
 
 # توليد Prisma Client
 RUN npx prisma generate
 
-# إزالة devDependencies بعد البناء
-RUN npm prune --omit=dev
+# بناء المشروع
+RUN npm run build
 
-# تعيين بيئة الإنتاج بعد البناء
-ENV NODE_ENV=production
-
-# مجلد الـ uploads
-RUN mkdir -p uploads
-
-EXPOSE 4000
-
-CMD ["node", "dist/main"]
+# تشغيل السيرفر
+CMD ["npm", "run", "start:prod"]
