@@ -4,21 +4,15 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // CORS - السماح للفرونت اند بالوصول
+  // 1. السماح للفرونت إند إنه يكلم الباك إند (عشان مشكلة CORS)
   app.enableCors({
-    origin: [
-      process.env.FRONTEND_URL || 'https://alshateracademy.com',
-      'http://localhost:3000',
-    ],
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true,
+    origin: '*',
   });
 
+  // 2. السطر ده هو السر! لازم ياخد البورت من Railway ويشتغل على 0.0.0.0
   const port = process.env.PORT || 4000;
   await app.listen(port, '0.0.0.0');
-  console.log(`🚀 Application running on port ${port}`);
+
+  console.log(`Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();
-
-
